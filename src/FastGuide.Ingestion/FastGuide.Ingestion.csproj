@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+  <ItemGroup>
+    <ProjectReference Include="../FastGuide.Core/FastGuide.Core.csproj" />
+    <ProjectReference Include="../FastGuide.Infrastructure/FastGuide.Infrastructure.csproj" />
+      <ProjectReference Include="../FastGuide.ServiceDefaults/FastGuide.ServiceDefaults.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+  </ItemGroup>
+</Project>
