@@ -19,6 +19,9 @@ builder.Services.AddFastGuideInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<FastGuideDbContext>();

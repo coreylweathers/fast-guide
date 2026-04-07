@@ -16,7 +16,7 @@ FastGuide is a production-oriented MVP for a FAST (Free Ad-Supported TV) guide b
 
 ### Prerequisites
 
-- .NET SDK (latest stable).
+- .NET 10 SDK (latest stable).
 - Docker (optional, for containerized execution).
 
 ### Run with .NET Aspire (recommended)
@@ -38,6 +38,14 @@ dotnet run --project src/FastGuide.Api/FastGuide.Api.csproj
 ```bash
 dotnet run --project src/FastGuide.Ingestion/FastGuide.Ingestion.csproj
 ```
+
+## Web UI
+
+The API project now also serves a lightweight, dark-themed dashboard from `/` (`wwwroot`) inspired by cinematic FAST guide layouts. It includes:
+- left navigation rail + top search
+- live highlights (`/now`)
+- channel directory (`/channels`)
+- integrated search experience (`/search`)
 
 ## API endpoints
 
@@ -71,3 +79,9 @@ dotnet test tests/FastGuide.Tests/FastGuide.Tests.csproj
 ```bash
 docker compose up --build
 ```
+
+
+## Dependency policy
+
+- Solution targets `net10.0` globally (`Directory.Build.props`).
+- NuGet package references use floating versions (`Version="*"`) so restores resolve to the latest available packages.

@@ -5,7 +5,7 @@
       <ProjectReference Include="../FastGuide.ServiceDefaults/FastGuide.ServiceDefaults.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="*" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="*" />
   </ItemGroup>
 </Project>

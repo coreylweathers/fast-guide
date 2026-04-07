@@ -1,67 +1,91 @@
 # Architecture
 
-## High-level design
+## Runtime topology (what actually runs)
 
 ```text
-                       +-------------------------+
-                       |  FastGuide.AppHost      |
-                       |  (.NET Aspire)          |
-                       +-----------+-------------+
-                                   |
-            +----------------------+----------------------+
-            |                                             |
-+-----------v-------------+                   +-----------v-------------+
-| FastGuide.Api           |                   | FastGuide.Ingestion     |
-| Minimal APIs            |                   | BackgroundService        |
-| DTOs + Query Endpoints  |                   | Scheduled every 15 min   |
-+-----------+-------------+                   +-----------+-------------+
-            |                                             |
-            +----------------------+----------------------+
-                                   |
-                     +-------------v-------------+
-                     | FastGuide.Infrastructure  |
-                     | EF Core + Provider Clients|
-                     | IngestionOrchestrator     |
-                     +-------------+-------------+
-                                   |
-                     +-------------v-------------+
-                     | FastGuide.Core            |
-                     | Domain + Normalization    |
-                     +---------------------------+
+                                      +---------------------------+
+                                      | FastGuide.AppHost         |
+                                      | (.NET Aspire orchestrator)|
+                                      +------------+--------------+
+                                                   |
+                          +------------------------+------------------------+
+                          |                                                 |
+                +---------v---------+                             +---------v---------+
+                | FastGuide.Api     |                             | FastGuide.Ingestion|
+                | Minimal REST API  |                             | Background worker  |
+                | Query/read path   |                             | Ingest/write path  |
+                +---------+---------+                             +---------+---------+
+                          |                                                 |
+                          | reads                                           | calls providers
+                          |                                                 |
+                          |                                        +--------v---------------------+
+                          |                                        | IProviderIngestionService[]  |
+                          |                                        | - PlutoIngestionService      |
+                          |                                        | - PlexIngestionService       |
+                          |                                        | - XumoIngestionService       |
+                          |                                        +--------+---------------------+
+                          |                                                 |
+                          |                                                 | HttpClient + Polly retry
+                          |                                                 v
+                          |                                    +------------+-------------------+
+                          |                                    | External provider endpoints    |
+                          |                                    | (Pluto / Plex / Xumo JSON)    |
+                          |                                    +------------+-------------------+
+                          |                                                 |
+                          |                                                 v
+                          |                                    +------------+-------------------+
+                          |                                    | IngestionOrchestrator          |
+                          |                                    | + ChannelNormalizer (Core)     |
+                          |                                    +------------+-------------------+
+                          |                                                 |
+                          +--------------------------+----------------------+ 
+                                                     |
+                                                     v
+                                      +--------------+--------------+
+                                      | SQLite (FastGuideDbContext) |
+                                      | Channels / ProgramSlots     |
+                                      | Provider* raw metadata      |
+                                      | IngestionLogs               |
+                                      +--------------+--------------+
+                                                     |
+                                                     v
+                                         API DTO projections returned
 ```
 
-## Layer responsibilities
+## Source-level layering
 
-### Core
+- **FastGuide.Core**
+  - Domain entities (`Channel`, `ProgramSlot`, `ProviderChannel`, `ProviderProgramSlot`, `IngestionLog`).
+  - Contracts (`IProviderIngestionService`, `IChannelNormalizer`).
+  - Channel dedupe/canonicalization/fuzzy match logic.
 
-- Defines the shared domain entities and interfaces.
-- Contains normalization logic (canonicalization + fuzzy dedupe + provider priority).
-- No external I/O or persistence concerns.
+- **FastGuide.Infrastructure**
+  - `FastGuideDbContext` and EF mappings/indexes.
+  - Provider HTTP clients/parsers.
+  - `IngestionOrchestrator` that persists normalized + provider-native records.
 
-### Infrastructure
+- **FastGuide.Api**
+  - Public REST query endpoints.
+  - DTO shaping from normalized storage.
+  - Optional startup ingestion kick.
 
-- Implements EF Core persistence and provider ingestion clients.
-- Encapsulates provider endpoint parsing and retry behavior.
-- Runs orchestration that maps provider payloads to normalized entities.
+- **FastGuide.Ingestion**
+  - `BackgroundService` loop every 15 minutes.
+  - Executes orchestrator safely (logs errors, continues).
 
-### API
+- **FastGuide.ServiceDefaults**
+  - Shared health endpoints, service discovery, HTTP resilience defaults, OpenTelemetry hooks.
 
-- Query-only boundary.
-- Exposes typed DTOs and avoids leaking provider internals.
-- Startup normalization refresh can be toggled for test environments.
+- **FastGuide.AppHost**
+  - Local distributed composition and startup via .NET Aspire.
 
-### Ingestion worker
+## Data flow summary
 
-- Runs orchestrator on a 15-minute cadence.
-- Logs errors, continues operation, and does not crash on provider failure.
+1. Ingestion worker triggers on schedule.
+2. Provider clients fetch remote JSON with retries.
+3. Orchestrator normalizes channels/programs and stores both raw+normalized data.
+4. API reads normalized tables and projects DTOs for consumers.
 
-### Aspire host + Service defaults
+## Important note
 
-- AppHost composes and runs distributed services.
-- ServiceDefaults centralizes telemetry, health checks, client resilience, and discovery.
-
-## Why this split?
-
-- **Maintainability**: each concern is isolated and replaceable.
-- **Extensibility**: new providers only implement `IProviderIngestionService`.
-- **Operational clarity**: ingestion and API can scale/deploy independently.
+This MVP currently uses a **single SQLite database** as the shared persistence boundary for both API reads and ingestion writes.
