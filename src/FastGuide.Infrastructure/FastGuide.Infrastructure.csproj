@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../FastGuide.Core/FastGuide.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="*" />
+    <PackageReference Include="Polly" Version="*" />
+    <PackageReference Include="Polly.Extensions" Version="*" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="*" />
+    <PackageReference Include="AngleSharp" Version="*" />
+  </ItemGroup>
+</Project>

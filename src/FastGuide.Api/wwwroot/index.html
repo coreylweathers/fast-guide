@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FastGuide</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div>
+        <h1 class="brand">FastGuide</h1>
+        <p class="subtitle">Digital Concierge</p>
+      </div>
+      <nav class="menu">
+        <button class="menu-item active" data-view="home">Home</button>
+        <button class="menu-item" data-view="directory">Directory</button>
+        <button class="menu-item" data-view="search">Search</button>
+        <button class="menu-item" data-view="now">What&apos;s On Now</button>
+      </nav>
+      <button class="primary">Watch Live</button>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div class="tabs">
+          <button class="tab active" data-view="home">Live Guide</button>
+          <button class="tab" data-view="directory">Directory</button>
+          <button class="tab" data-view="search">Search</button>
+        </div>
+        <form id="search-form" class="search-wrap">
+          <input id="search-input" placeholder="Search channels, shows..." />
+        </form>
+      </header>
+
+      <section id="home-view" class="view active">
+        <h2>Live Highlights</h2>
+        <div id="now-grid" class="card-grid two"></div>
+      </section>
+
+      <section id="directory-view" class="view">
+        <div class="section-header">
+          <h2>Channel Directory</h2>
+          <span id="channel-count"></span>
+        </div>
+        <div id="channel-grid" class="card-grid three"></div>
+      </section>
+
+      <section id="search-view" class="view">
+        <div class="section-header">
+          <h2>Search Results</h2>
+          <span id="search-count"></span>
+        </div>
+        <h3>Channels</h3>
+        <div id="search-channel-grid" class="card-grid three"></div>
+        <h3>Airing / Programs</h3>
+        <div id="search-program-grid" class="card-grid two"></div>
+      </section>
+
+      <section id="now-view" class="view">
+        <h2>What&apos;s On Now</h2>
+        <div id="now-list" class="timeline"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
