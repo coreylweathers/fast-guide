@@ -52,3 +52,27 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Lock files - INCLUDE these in version control for reproducible builds
+# *.lock.json should NOT be ignored - remove from here if it appears elsewhere
+!packages.lock.json
+
+# Test coverage reports
+coverage/
+*.coverage
+*.opencover.xml
+
+# IDE settings
+.vscode/launch.json
+.vscode/tasks.json
+
+# OS files
+.DS_Store
+Thumbs.db
+# Squad: ignore runtime state (logs, inbox, sessions)
+.squad/orchestration-log/
+.squad/log/
+.squad/decisions/inbox/
+.squad/sessions/
+# Squad: SubSquad activation file (local to this machine)
+.squad-workstream

@@ -2,9 +2,10 @@
   <ItemGroup>
     <ProjectReference Include="../FastGuide.Core/FastGuide.Core.csproj" />
     <ProjectReference Include="../FastGuide.Infrastructure/FastGuide.Infrastructure.csproj" />
-      <ProjectReference Include="../FastGuide.ServiceDefaults/FastGuide.ServiceDefaults.csproj" />
+    <ProjectReference Include="../FastGuide.ServiceDefaults/FastGuide.ServiceDefaults.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Serilog.AspNetCore" Version="8.*" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.*" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.*" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0": {
+      "FuzzySharp": {
+        "type": "Direct",
+        "requested": "[2.*, )",
+        "resolved": "2.0.2",
+        "contentHash": "sBKqWxw3g//peYxDZ8JipRlyPbIyBtgzqBVA5GqwHVeqtIrw75maGXAllztf+1aJhchD+drcQIgf2mFho8ZV8A=="
+      }
+    }
+  }
+}

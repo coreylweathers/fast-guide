@@ -4,5 +4,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
+    <!-- Enable package lock files for reproducible builds -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <LockFileWriteCurrentRuntimeVersion>false</LockFileWriteCurrentRuntimeVersion>
   </PropertyGroup>
 </Project>
