@@ -1,0 +1,51 @@
+﻿version: 2
+updates:
+  # NuGet package updates
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "[GITHUB_USERNAME]"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    pull-request-branch-name:
+      separator: "/"
+    allow:
+      - dependency-type: "all"
+    ignore:
+      # Ignore pre-release versions
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+        # Uncomment to batch major version updates:
+        # update-types: ["version-update:semver-major"]
+
+  # GitHub Actions updates
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    reviewers:
+      - "[GITHUB_USERNAME]"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+
+  # Docker image updates
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    reviewers:
+      - "[GITHUB_USERNAME]"
+    commit-message:
+      prefix: "build"
+
