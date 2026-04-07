@@ -1,0 +1,15 @@
+services:
+  fastguide-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__FastGuide=Data Source=/data/fastguide.db
+    volumes:
+      - fastguide-data:/data
+
+volumes:
+  fastguide-data:

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <ProjectReference Include="../FastGuide.Core/FastGuide.Core.csproj" />
+    <ProjectReference Include="../FastGuide.Infrastructure/FastGuide.Infrastructure.csproj" />
+      <ProjectReference Include="../FastGuide.ServiceDefaults/FastGuide.ServiceDefaults.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+  </ItemGroup>
+</Project>
