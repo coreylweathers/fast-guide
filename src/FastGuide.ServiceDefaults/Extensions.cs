@@ -29,13 +29,8 @@ public static class Extensions
 
     public static TBuilder ConfigureOpenTelemetry<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
-        builder.Logging.AddOpenTelemetry(options =>
-        {
-            options.IncludeFormattedMessage = true;
-            options.IncludeScopes = true;
-        });
-
-        builder.Services.AddOpenTelemetry()
+        builder.Services
+            .AddOpenTelemetry()
             .WithMetrics(metrics =>
             {
                 metrics.AddAspNetCoreInstrumentation()
@@ -57,7 +52,15 @@ public static class Extensions
         var endpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
         if (!string.IsNullOrWhiteSpace(endpoint))
         {
-            builder.Services.AddOpenTelemetry().UseOtlpExporter();
+            builder.Services.AddOpenTelemetry()
+                .WithMetrics(metrics =>
+                {
+                    metrics.AddOtlpExporter(options => options.Endpoint = new Uri(endpoint));
+                })
+                .WithTracing(tracing =>
+                {
+                    tracing.AddOtlpExporter(options => options.Endpoint = new Uri(endpoint));
+                });
         }
 
         return builder;

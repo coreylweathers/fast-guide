@@ -1,11 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <IsAspireHost>true</IsAspireHost>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.AppHost" Version="*" />
-    <PackageReference Include="Aspire.Hosting.SQLite" Version="*" />
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.*" />
+    <PackageReference Include="Aspire.Hosting" Version="9.*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../FastGuide.Api/FastGuide.Api.csproj" />

@@ -11,8 +11,7 @@ builder.Services.AddFastGuideInfrastructure(builder.Configuration);
 builder.Services.AddHostedService<GuideIngestionWorker>();
 
 builder.Services.AddSerilog((services, cfg) => cfg
-    .ReadFrom.Configuration(builder.Configuration)
-    .ReadFrom.Services(services)
+    .MinimumLevel.Information()
     .Enrich.FromLogContext()
     .WriteTo.Console());
 

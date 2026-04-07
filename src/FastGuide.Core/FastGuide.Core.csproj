@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageReference Include="FuzzySharp" Version="*" />
+    <PackageReference Include="FuzzySharp" Version="2.*" />
   </ItemGroup>
 </Project>

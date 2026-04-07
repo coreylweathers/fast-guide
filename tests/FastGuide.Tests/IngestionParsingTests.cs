@@ -1,5 +1,6 @@
 using FastGuide.Infrastructure.Providers;
 using Microsoft.Extensions.Logging.Abstractions;
+using Xunit;
 
 namespace FastGuide.Tests;
 

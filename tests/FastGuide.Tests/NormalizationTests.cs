@@ -1,5 +1,6 @@
 using FastGuide.Core.Models;
 using FastGuide.Core.Normalization;
+using Xunit;
 
 namespace FastGuide.Tests;
 

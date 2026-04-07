@@ -1,14 +1,14 @@
+using Aspire.Hosting;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
-var database = builder.AddSqlite("fastguide-db");
-
-var api = builder.AddProject<Projects.FastGuide_Api>("fastguide-api")
-    .WithReference(database)
+// Add API project
+var api = builder.AddProject("fastguide-api", "../FastGuide.Api/FastGuide.Api.csproj")
     .WithEnvironment("ConnectionStrings__FastGuide", "Data Source=fastguide.db")
     .WithEnvironment("ASPNETCORE_ENVIRONMENT", "Development");
 
-builder.AddProject<Projects.FastGuide_Ingestion>("fastguide-ingestion")
-    .WithReference(database)
+// Add Ingestion worker
+builder.AddProject("fastguide-ingestion", "../FastGuide.Ingestion/FastGuide.Ingestion.csproj")
     .WithReference(api)
     .WithEnvironment("ConnectionStrings__FastGuide", "Data Source=fastguide.db");
 
