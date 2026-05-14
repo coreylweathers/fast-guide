@@ -1,0 +1,5 @@
+{
+  "appHost": {
+    "path": "src/FastGuide.AppHost/FastGuide.AppHost.csproj"
+  }
+}
